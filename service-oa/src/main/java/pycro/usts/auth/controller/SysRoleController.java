@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import pycro.usts.auth.service.SysRoleService;
-import pycro.usts.common.config.exception.PycroException;
 import pycro.usts.common.result.Result;
 import pycro.usts.model.system.SysRole;
+import pycro.usts.vo.system.AssignRoleVo;
 import pycro.usts.vo.system.SysRoleQueryVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Pycro
@@ -24,10 +25,26 @@ import java.util.List;
 @Api(tags = "角色管理")
 @RestController
 @RequestMapping("/admin/system/sysRole")
-public class SystemRoleController {
+public class SysRoleController {
     // 注入service
     @Autowired
     SysRoleService sysRoleService;
+
+    // 1 查询所有角色 和 当前用户所属角色
+    @ApiOperation("根据用户id获取角色")
+    @GetMapping("/toAssign/{userId}")
+    public Result<?> toAssign(@PathVariable("userId") Long userId) {
+        Map<String, Object> map = sysRoleService.findRoleDataByUserId(userId);
+        return Result.ok(map);
+    }
+
+    // 2 为用户分配角色
+    @ApiOperation("为用户分配角色")
+    @PostMapping("/doAssign")
+    public Result<?> doAssign(@RequestBody AssignRoleVo assignRoleVo) {
+        sysRoleService.doAssign(assignRoleVo);
+        return Result.ok();
+    }
 
     // 获取所有记录
     /* @GetMapping("/findAll")
@@ -39,11 +56,11 @@ public class SystemRoleController {
     @ApiOperation("查询所有角色")
     @GetMapping("/findAll")
     public Result<?> findAll() {
-        try {
-            int i = 1 / 0;
-        } catch (Exception e) {
-            throw new PycroException(22222, "customized exception");
-        }
+        // try {
+        //     int i = 1 / 0;
+        // } catch (Exception e) {
+        //     throw new PycroException(22222, "customized exception");
+        // }
         List<SysRole> list = sysRoleService.list();
         return Result.ok(list);
     }
@@ -86,7 +103,7 @@ public class SystemRoleController {
     public Result<?> save(@RequestBody SysRole sysRole) {
         boolean isSuccess = sysRoleService.save(sysRole);
         if (isSuccess) {
-            return Result.ok();
+            return Result.ok().message("添加成功");
         } else {
             return Result.fail();
         }
@@ -116,7 +133,7 @@ public class SystemRoleController {
     public Result<?> update(@RequestBody SysRole sysRole) {
         boolean isSuccess = sysRoleService.updateById(sysRole);
         if (isSuccess) {
-            return Result.ok();
+            return Result.ok().message("修改成功");
         } else {
             return Result.fail();
         }
@@ -130,10 +147,10 @@ public class SystemRoleController {
      */
     @ApiOperation("根据id删除")
     @DeleteMapping("/remove/{id}")
-    public Result<?> deleteById(@PathVariable Long id) {
+    public Result<?> removeById(@PathVariable Long id) {
         boolean isSuccess = sysRoleService.removeById(id);
         if (isSuccess) {
-            return Result.ok();
+            return Result.ok().message("删除成功");
         } else {
             return Result.fail();
         }
@@ -144,7 +161,7 @@ public class SystemRoleController {
     public Result<?> batchRemove(@RequestBody List<Long> idList) {
         boolean isSuccess = sysRoleService.removeByIds(idList);
         if (isSuccess) {
-            return Result.ok();
+            return Result.ok().message("批量删除成功");
         } else {
             return Result.fail();
         }
