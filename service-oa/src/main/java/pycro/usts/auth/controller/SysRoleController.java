@@ -28,7 +28,7 @@ import java.util.Map;
 public class SysRoleController {
     // 注入service
     @Autowired
-    SysRoleService sysRoleService;
+    private SysRoleService sysRoleService;
 
     // 1 查询所有角色 和 当前用户所属角色
     @ApiOperation("根据用户id获取角色")

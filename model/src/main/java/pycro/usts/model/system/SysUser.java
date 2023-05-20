@@ -53,7 +53,7 @@ public class SysUser extends BaseEntity {
 	@TableField("open_id")
 	private String openId;
 
-	@ApiModelProperty(value = "状态（1：正常 0：停用）")
+	@ApiModelProperty(value = "状态(1:正常, 0:停用)")
 	@TableField("status")
 	private Integer status;
 

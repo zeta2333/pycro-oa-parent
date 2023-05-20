@@ -27,7 +27,7 @@ import pycro.usts.vo.system.SysUserQueryVo;
 @RequestMapping("/admin/system/sysUser")
 public class SysUserController {
     @Autowired
-    SysUserService service;
+    private SysUserService service;
 
     @ApiOperation(value = "更新状态")
     @GetMapping("/updateStatus/{id}/{status}")
