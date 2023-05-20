@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import pycro.usts.auth.service.SysUserService;
 import pycro.usts.common.result.Result;
+import pycro.usts.common.utils.MD5;
 import pycro.usts.model.system.SysUser;
 import pycro.usts.vo.system.SysUserQueryVo;
 
@@ -32,7 +33,7 @@ public class SysUserController {
     @ApiOperation(value = "更新状态")
     @GetMapping("/updateStatus/{id}/{status}")
     public Result<?> updateStatus(@PathVariable Long id, @PathVariable Integer status) {
-        service.updateStatus(id,status);
+        service.updateStatus(id, status);
         return Result.ok();
     }
 
@@ -78,6 +79,8 @@ public class SysUserController {
     @ApiOperation(value = "保存用户")
     @PostMapping("/save")
     public Result<?> save(@RequestBody SysUser user) {
+        // 对明文密码进行加密
+        user.setPassword(MD5.encrypt(user.getPassword()));
         service.save(user);
         return Result.ok().message("添加成功");
     }

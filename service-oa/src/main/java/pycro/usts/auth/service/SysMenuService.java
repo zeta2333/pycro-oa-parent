@@ -3,6 +3,7 @@ package pycro.usts.auth.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pycro.usts.model.system.SysMenu;
 import pycro.usts.vo.system.AssignMenuVo;
+import pycro.usts.vo.system.RouterVo;
 
 import java.util.List;
 
@@ -27,4 +28,10 @@ public interface SysMenuService extends IService<SysMenu> {
 
     // 角色分配菜单
     void doAssign(AssignMenuVo assignMenuVo);
+
+    // 根据用户id获取用户可以操作菜单列表
+    List<RouterVo> findMenuListByUserId(Long userId);
+
+    // 根据用户id获取用户可以操作按钮列表
+    List<String> findPermsByUserId(Long userId);
 }
