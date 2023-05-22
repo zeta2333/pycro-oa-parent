@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import pycro.usts.auth.service.SysRoleService;
@@ -31,6 +32,7 @@ public class SysRoleController {
     private SysRoleService sysRoleService;
 
     // 1 查询所有角色 和 当前用户所属角色
+
     @ApiOperation("根据用户id获取角色")
     @GetMapping("/toAssign/{userId}")
     public Result<?> toAssign(@PathVariable("userId") Long userId) {
@@ -71,6 +73,7 @@ public class SysRoleController {
      * @param sysRoleQueryVo 条件对象
      * @return
      */
+    @PreAuthorize("hasAuthority('bnt.sysRole.list')")
     @ApiOperation("条件分页查询")
     @GetMapping("/{current}/{size}")
     public Result<?> findPage(
@@ -98,6 +101,7 @@ public class SysRoleController {
      * @param sysRole
      * @return
      */
+    @PreAuthorize("hasAuthority('bnt.sysRole.add')")
     @ApiOperation("添加角色")
     @PostMapping("/save")
     public Result<?> save(@RequestBody SysRole sysRole) {
@@ -115,6 +119,7 @@ public class SysRoleController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAuthority('bnt.sysRole.list')")
     @ApiOperation("根据id查询")
     @GetMapping("/get/{id}")
     public Result<?> getById(@PathVariable Long id) {
@@ -128,6 +133,7 @@ public class SysRoleController {
      * @param sysRole
      * @return
      */
+    @PreAuthorize("hasAuthority('bnt.sysRole.update')")
     @ApiOperation("修改角色")
     @PutMapping("/update")
     public Result<?> update(@RequestBody SysRole sysRole) {
@@ -145,6 +151,7 @@ public class SysRoleController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAuthority('bnt.sysRole.remove')")
     @ApiOperation("根据id删除")
     @DeleteMapping("/remove/{id}")
     public Result<?> removeById(@PathVariable Long id) {
@@ -156,6 +163,13 @@ public class SysRoleController {
         }
     }
 
+    /**
+     * 根据id列表批量删除
+     *
+     * @param idList
+     * @return
+     */
+    @PreAuthorize("hasAuthority('bnt.sysRole.remove')")
     @ApiOperation("批量删除")
     @DeleteMapping("/batchRemove")
     public Result<?> batchRemove(@RequestBody List<Long> idList) {

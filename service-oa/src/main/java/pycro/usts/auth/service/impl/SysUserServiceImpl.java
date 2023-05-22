@@ -1,5 +1,6 @@
 package pycro.usts.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import pycro.usts.auth.mapper.SysUserMapper;
@@ -28,5 +29,13 @@ public class SysUserServiceImpl
         sysUser.setStatus(status);
         // 调用方法进行修改
         baseMapper.updateById(sysUser);
+    }
+
+    @Override
+    public SysUser getUserByUsername(String username) {
+        LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysUser::getUsername, username);
+        SysUser sysUser = baseMapper.selectOne(wrapper);
+        return sysUser;
     }
 }
