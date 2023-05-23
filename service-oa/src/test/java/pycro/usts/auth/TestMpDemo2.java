@@ -1,9 +1,8 @@
-package usts.pycro.auth;
+package pycro.usts.auth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pycro.usts.auth.ServiceAuthApplication;
 import pycro.usts.auth.service.SysRoleService;
 import pycro.usts.model.system.SysRole;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * 2023-05-12 8:50 AM
  */
 
-@SpringBootTest(classes = ServiceAuthApplication.class)
+@SpringBootTest
 public class TestMpDemo2 {
     // 注入
     @Autowired

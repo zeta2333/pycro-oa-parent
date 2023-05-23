@@ -1,4 +1,4 @@
-package usts.pycro.auth;
+package pycro.usts.auth;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,7 +18,7 @@ import java.util.List;
  * 2023-05-12 8:50 AM
  */
 
-@SpringBootTest(classes = ServiceAuthApplication.class)
+@SpringBootTest
 public class TestMpDemo1 {
     // 注入
     @Autowired

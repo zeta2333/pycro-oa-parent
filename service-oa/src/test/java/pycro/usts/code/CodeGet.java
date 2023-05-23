@@ -1,4 +1,4 @@
-package usts.pycro.code;
+package pycro.usts.code;
 
 
 import com.baomidou.mybatisplus.annotation.DbType;
