@@ -21,7 +21,7 @@ import java.util.Map;
  * 2023-05-23 10:22 AM
  */
 @SpringBootTest
-public class ProcessTestDemo1 {
+public class ProcessTestDemo2 {
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
@@ -30,49 +30,6 @@ public class ProcessTestDemo1 {
     private TaskService taskService;
     @Autowired
     private HistoryService historyService;
-
-    /* 监听器分配任务  */
-    @Test
-    public void deployProcess02() {
-        Deployment deploy = repositoryService.createDeployment()
-                .addClasspathResource("process/jiaban02.bpmn20.xml")
-                .name("加班流程申请02")
-                .deploy();
-        System.out.println(deploy.getId());
-        System.out.println(deploy.getName());
-    }
-
-    // 启动流程实例
-    @Test
-    public void startProcessInstance02() {
-        // 创建流程实例
-        ProcessInstance processInstance = runtimeService
-                .startProcessInstanceByKey("jiaban02");
-        System.out.println(processInstance.getProcessDefinitionId());
-        System.out.println(processInstance.getId());
-    }
-
-    /* uel-method */
-    // 流程部署
-    @Test
-    public void deployProcess01() {
-        Deployment deploy = repositoryService.createDeployment()
-                .addClasspathResource("process/jiaban01.bpmn20.xml")
-                .name("加班流程申请01")
-                .deploy();
-        System.out.println(deploy.getId());
-        System.out.println(deploy.getName());
-    }
-
-    // 启动流程实例
-    @Test
-    public void startProcessInstance01() {
-        // 创建流程实例
-        ProcessInstance processInstance = runtimeService
-                .startProcessInstanceByKey("jiaban01");
-        System.out.println(processInstance.getProcessDefinitionId());
-        System.out.println(processInstance.getId());
-    }
 
     /* uel-value  */
     // 流程部署
@@ -90,8 +47,8 @@ public class ProcessTestDemo1 {
     @Test
     public void startProcessInstance() {
         Map<String, Object> map = new HashMap<>();
-        map.put("assignee1", "Lucy");
-        map.put("assignee2", "Mary");
+        map.put("assignee1", "Lucy03");
+        // map.put("assignee2", "Mary02");
         // 创建流程实例
         ProcessInstance processInstance = runtimeService
                 .startProcessInstanceByKey("jiaban", map);
@@ -99,10 +56,22 @@ public class ProcessTestDemo1 {
         System.out.println(processInstance.getId());
     }
 
+    @Test
+    public void completeTask() {
+        // 根据负责人查询一条任务
+        Task task = taskService.createTaskQuery()
+                .taskAssignee("Lucy03")
+                .singleResult();
+        // 完成任务，参数：任务id
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("assignee2", "Fake");
+        taskService.complete(task.getId(), variables);
+    }
+
     // 查询代办任务
     @Test
     public void findTaskList() {
-        String assignee = "Tom";
+        String assignee = "Fake";
         List<Task> list = taskService.createTaskQuery()
                 .taskAssignee(assignee)
                 .list();
