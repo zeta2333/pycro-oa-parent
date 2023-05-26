@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * 2023-05-12 11:35 AM
  */
 @Configuration
-@MapperScan("pycro.usts.auth.mapper")
+@MapperScan(basePackages = {"pycro.usts.auth.mapper","pycro.usts.process.mapper"})
 public class MybatisPlusConfig {
 
     /**
