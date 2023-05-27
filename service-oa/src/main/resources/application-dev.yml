@@ -4,7 +4,7 @@ server:
 mybatis-plus:
     configuration:
         log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 查看日志
-    mapper-locations: classpath:pycro/usts/auth/mapper/xml/*.xml
+    mapper-locations: classpath:pycro/usts/*/mapper/xml/*.xml
 
 spring:
     datasource:

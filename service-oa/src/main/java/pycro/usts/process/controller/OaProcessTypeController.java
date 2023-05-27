@@ -11,6 +11,8 @@ import pycro.usts.common.result.Result;
 import pycro.usts.model.process.ProcessType;
 import pycro.usts.process.service.OaProcessTypeService;
 
+import java.util.List;
+
 /**
  * <p>
  * 审批类型 前端控制器
@@ -24,6 +26,13 @@ import pycro.usts.process.service.OaProcessTypeService;
 public class OaProcessTypeController {
     @Autowired
     private OaProcessTypeService processTypeService;
+
+    @ApiOperation("查询所有记录")
+    @GetMapping("findAll")
+    public Result<?> findAll() {
+        List<ProcessType> list = processTypeService.list();
+        return Result.ok(list);
+    }
 
     @PreAuthorize("hasAuthority('bnt.processType.list')")
     @ApiOperation("获取分页列表")

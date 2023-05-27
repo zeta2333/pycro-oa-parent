@@ -97,7 +97,8 @@ public class IndexController {
         Map<String, Object> map = new HashMap<>();
         map.put("roles", Collections.singletonList("admin"));
         map.put("introduction", "I am a super administrator");
-        map.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        // map.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        map.put("avatar", "https://z3.ax1x.com/2021/03/28/cp7SOK.gif");
         map.put("name", sysUser.getName());
         // 路由权限列表
         map.put("routers", routerList);
