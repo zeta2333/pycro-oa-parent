@@ -11,6 +11,7 @@ import pycro.usts.common.jwt.JwtHelper;
 import pycro.usts.common.result.ResponseUtil;
 import pycro.usts.common.result.Result;
 import pycro.usts.common.result.ResultCodeEnum;
+import pycro.usts.security.custom.LoginUserInfoHelper;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -60,13 +61,19 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             String username = JwtHelper.getUsername(token);
             logger.info("username:" + username);
             if (!StringUtils.isEmpty(username)) {
+                // 通过ThreadLocal记录当前登录人信息
+                LoginUserInfoHelper.setUserId(JwtHelper.getUserId(token));
+                LoginUserInfoHelper.setUsername(username);
                 // 从redis中获取权限
                 String authoritiesString = (String) redisTemplate.opsForValue().get(username);
                 List<Map> mapList = JSON.parseArray(authoritiesString, Map.class);
                 List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                for (Map map : mapList) {
-                    authorities.add(new SimpleGrantedAuthority((String) map.get("authority")));
+                if (mapList!=null){
+                    for (Map map : mapList) {
+                        authorities.add(new SimpleGrantedAuthority((String) map.get("authority")));
+                    }
                 }
+
                 return new UsernamePasswordAuthenticationToken(username, null, authorities);
             } else {
                 return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());

@@ -14,16 +14,16 @@ import java.util.List;
 @TableName("oa_process_type")
 public class ProcessType extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "类型名称")
-	@TableField("name")
-	private String name;
+    @ApiModelProperty(value = "类型名称")
+    @TableField("name")
+    private String name;
 
-	@ApiModelProperty(value = "描述")
-	@TableField("description")
-	private String description;
+    @ApiModelProperty(value = "描述")
+    @TableField("description")
+    private String description;
 
-	@TableField(exist = false)
-	private List<ProcessTemplate> processTemplateList;
+    @TableField(exist = false)
+    private List<ProcessTemplate> processTemplateList;
 }

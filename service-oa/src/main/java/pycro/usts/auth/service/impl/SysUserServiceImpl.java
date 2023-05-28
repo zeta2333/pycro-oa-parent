@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 import pycro.usts.auth.mapper.SysUserMapper;
 import pycro.usts.auth.service.SysUserService;
 import pycro.usts.model.system.SysUser;
+import pycro.usts.security.custom.LoginUserInfoHelper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -37,5 +41,18 @@ public class SysUserServiceImpl
         wrapper.eq(SysUser::getUsername, username);
         SysUser sysUser = baseMapper.selectOne(wrapper);
         return sysUser;
+    }
+
+    @Override
+    public Map<String, Object> getCurrentUser() {
+        SysUser sysUser = baseMapper.selectById(LoginUserInfoHelper.getUserId());
+        // SysDept sysDept = sysDeptService.getById(sysUser.getDeptId());
+        // SysPost sysPost = sysPostService.getById(sysUser.getPostId());
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", sysUser.getName());
+        map.put("phone", sysUser.getPhone());
+        // map.put("deptName", sysDept.getName());
+        // map.put("postName", sysPost.getName());
+        return map;
     }
 }
