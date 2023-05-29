@@ -1,5 +1,5 @@
 server:
-    port: 6815
+    port: 8201
 
 mybatis-plus:
     configuration:
@@ -45,3 +45,9 @@ spring:
         history-level: full
         #校验流程文件，默认校验resources下的process 文件夹的流程文件
         check-process-definitions: true
+
+# 微信测试公众号配置
+wechat:
+    mpAppId: wxd7cca544bd6af78a
+    mpAppSecret: fe78289d126b08d2f1142f0abca4b9c0
+    userInfoUrl: http://ggkt2.vipgz1.91tunnel.com/admin/wechat/userInfo

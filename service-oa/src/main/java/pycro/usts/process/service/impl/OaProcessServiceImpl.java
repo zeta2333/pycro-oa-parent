@@ -39,6 +39,7 @@ import pycro.usts.vo.process.ApprovalVo;
 import pycro.usts.vo.process.ProcessFormVo;
 import pycro.usts.vo.process.ProcessQueryVo;
 import pycro.usts.vo.process.ProcessVo;
+import pycro.usts.wechat.service.MessageService;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -78,6 +79,9 @@ public class OaProcessServiceImpl extends ServiceImpl<OaProcessMapper, Process> 
 
     @Autowired
     private OaProcessRecordService processRecordService;
+
+    @Autowired
+    private MessageService messageService;
 
     // 条件分页查询
     @Override
@@ -147,7 +151,8 @@ public class OaProcessServiceImpl extends ServiceImpl<OaProcessMapper, Process> 
         for (Task task : taskList) {
             SysUser user = sysUserService.getUserByUsername(task.getAssignee());
             nameList.add(user.getName());
-            // TODO 6 推送消息给下一个审批人，后续完善
+            // 推送消息给下一个审批人
+            messageService.pushPendingMessage(process.getId(), user.getId(), task.getId());
         }
         process.setProcessInstanceId(processInstance.getId());
         process.setDescription("等待" + StringUtils.join(nameList.toArray(), ",") + "审批");
@@ -262,8 +267,8 @@ public class OaProcessServiceImpl extends ServiceImpl<OaProcessMapper, Process> 
             for (Task task : taskList) {
                 SysUser sysUser = sysUserService.getUserByUsername(task.getAssignee());
                 assigneeList.add(sysUser.getName());
-
-                // TODO 推送消息给下一个审批人
+                //  推送消息给下一个审批人
+                messageService.pushPendingMessage(process.getId(), sysUser.getId(), task.getId());
             }
             process.setDescription("等待" + StringUtils.join(assigneeList.toArray(), ",") + "审批");
             process.setStatus(1);
@@ -323,7 +328,7 @@ public class OaProcessServiceImpl extends ServiceImpl<OaProcessMapper, Process> 
     public IPage<ProcessVo> findStarted(Page<ProcessVo> pageParam) {
         ProcessQueryVo processQueryVo = new ProcessQueryVo();
         processQueryVo.setUserId(LoginUserInfoHelper.getUserId());
-        IPage<ProcessVo> pageModel  = baseMapper.selectPage(pageParam, processQueryVo);
+        IPage<ProcessVo> pageModel = baseMapper.selectPage(pageParam, processQueryVo);
         for (ProcessVo item : pageModel.getRecords()) {
             item.setTaskId("0");
         }
